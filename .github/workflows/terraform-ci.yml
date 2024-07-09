@@ -37,7 +37,6 @@ jobs:
             echo "Found Terraform files in directory: $dir"
           done
           echo "##[endgroup]"
-          echo "::set-output name=tfDIRS::$tfDIRS"
           echo "{tfDIRS}={$tfDIRS}" >> $GITHUB_OUTPUT
 
       - name: Terraform Format Check
