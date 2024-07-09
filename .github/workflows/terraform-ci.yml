@@ -43,13 +43,13 @@ jobs:
           # echo "::set-env name=tfDIRS::$(echo $tfDIRS)"
           # echo "tfDIRS={$tfDIRS}" >> "$GITHUB_ENV"
 
-      # - name: Terraform Format
-      #   run: |
-      #     tfDIRS="${{ env.tfDIRS }}"
-      #     for dir in $tfDIRS; do
-      #       echo "Running terraform fmt in directory: $dir"
-      #       (cd "$dir" && terraform fmt)
-      #     done
+      - name: Terraform Format
+        run: |
+          tfDIRS="${{ env.tfDIRS }}"
+          for dir in $tfDIRS; do
+            echo "Running terraform fmt in directory: $dir"
+            (cd "$dir" && terraform fmt)
+          done
 
       # - name: Terraform Validate
       #   run: |
