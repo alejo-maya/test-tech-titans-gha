@@ -11,13 +11,7 @@ jobs:
     name: Terraform Validate and Format
     runs-on: ubuntu-latest
 
-    # Save all directories containing terraform files in a variable
-    env:
-      tfDIRS: $(find . -name '*.tf' -exec dirname {} \; | sort -u)
-
     steps:
-
-      - run: echo $tfDIRS
 
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
@@ -33,8 +27,16 @@ jobs:
         with:
           terraform_version: 1.9.1
 
+       # Save all directories containing terraform files in a variable
+      - name: Find Directories
+        id: find_dirs
+        run: |
+          tfDIRS=$(find . -name '*.tf' -exec dirname {} \; | sort -u)
+          echo "::set-output name=tfDIRS::$tfDIRS"
+
       - name: Terraform Format Check
         run: |
+          tfDIRS="${{ steps.find_dirs.outputs.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform fmt  in directory: $dir"
             (cd "$dir" && terraform fmt)
@@ -42,6 +44,7 @@ jobs:
 
       - name: Terraform Validate
         run: |
+          tfDIRS="${{ steps.find_dirs.outputs.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform validate in directory: $dir"
             (cd "$dir" && terraform validate)
