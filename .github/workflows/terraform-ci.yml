@@ -51,10 +51,10 @@ jobs:
             (cd "$dir" && terraform fmt)
           done
 
-      # - name: Terraform Validate
-      #   run: |
-      #     tfDIRS="${{ steps.find_dirs.outputs.tfDIRS }}"
-      #     for dir in $tfDIRS; do
-      #       echo "Running terraform validate in directory: $dir"
-      #       (cd "$dir" && terraform validate)
-      #     done
+      - name: Terraform Validate
+        run: |
+          tfDIRS="${{ env.tfDIRS }}"
+          for dir in $tfDIRS; do
+            echo "Running terraform validate in directory: $dir"
+            (cd "$dir" && terraform validate)
+          done
