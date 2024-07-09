@@ -35,7 +35,7 @@ jobs:
           for dir in $tfDIRS; do
             echo "Found Terraform files in directory: $dir"
           done
-          echo "tfDIRS=$tfDIRS" >> $GITHUB_ENV
+          echo "tfDIRS=$tfDIRS" >> "$GITHUB_ENV"
 
       - name: Terraform Format
         run: |
