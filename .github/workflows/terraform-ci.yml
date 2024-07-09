@@ -43,6 +43,18 @@ jobs:
           # echo "::set-env name=tfDIRS::$(echo $tfDIRS)"
           # echo "tfDIRS={$tfDIRS}" >> "$GITHUB_ENV"
 
+      - name: Terraform Init
+        run: |
+          tfDIRS="${{ env.tfDIRS }}"
+          for dir in $tfDIRS; do
+            echo "Initializing Terraform in directory: $dir"
+            if [[ "$dir" == *"webapp"* ]]; then
+              (cd "$dir" && terraform init -backend-config="state.backend.conf" -reconfigure")
+            else
+              (cd "$dir" && terraform init)
+            fi
+          done
+
       - name: Terraform Format
         run: |
           tfDIRS="${{ env.tfDIRS }}"
