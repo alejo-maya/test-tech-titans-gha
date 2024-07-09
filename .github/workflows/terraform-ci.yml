@@ -17,6 +17,8 @@ jobs:
 
     steps:
 
+      - run: find . -name '*.tf' -exec dirname {} \; | sort -u 
+
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
 
