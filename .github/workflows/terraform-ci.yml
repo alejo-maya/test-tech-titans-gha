@@ -35,7 +35,12 @@ jobs:
           for dir in $tfDIRS; do
             echo "Found Terraform files in directory: $dir"
           done
-          echo "::set-env name=tfDIRS::$(echo $tfDIRS)"
+          {
+            echo 'tfDIRS<<EOF'
+            echo "$tfDIRS"  # Guarda el contenido de tfDIRS entre el delimitador EOF
+            echo EOF
+          } >> "$GITHUB_ENV"
+          # echo "::set-env name=tfDIRS::$(echo $tfDIRS)"
           # echo "tfDIRS={$tfDIRS}" >> "$GITHUB_ENV"
 
       # - name: Terraform Format
