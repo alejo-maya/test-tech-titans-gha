@@ -37,11 +37,9 @@ jobs:
           done
           {
             echo 'tfDIRS<<EOF'
-            echo "$tfDIRS"  # Guarda el contenido de tfDIRS entre el delimitador EOF
+            echo "$tfDIRS"
             echo EOF
           } >> "$GITHUB_ENV"
-          # echo "::set-env name=tfDIRS::$(echo $tfDIRS)"
-          # echo "tfDIRS={$tfDIRS}" >> "$GITHUB_ENV"
 
       - name: Terraform Init
         run: |
@@ -49,7 +47,8 @@ jobs:
           for dir in $tfDIRS; do
             echo "Initializing Terraform in directory: $dir"
             if [[ "$dir" == *"webapp"* ]]; then
-              (cd "$dir" && terraform init -backend-config="state.backend.conf" -reconfigure")
+              echo "hola"
+              # (cd "$dir" && terraform init -backend-config="state.backend.conf" -reconfigure")
             else
               (cd "$dir" && terraform init)
             fi
