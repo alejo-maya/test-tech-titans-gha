@@ -61,6 +61,7 @@ jobs:
 
       - name: Terraform Init
         run: |
+          az account show
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Initializing Terraform in directory: $dir"
