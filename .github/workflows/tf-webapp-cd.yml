@@ -18,6 +18,8 @@ jobs:
     name: Terraform Plan
     runs-on: ubuntu-latest
 
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
     # defaults:
     #   run:
     #     working-directory: pocs/infrastructure/terraform/webapp
