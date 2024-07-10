@@ -17,3 +17,4 @@ terraform apply "destroy.tfplan"
 chmod +x upload_blob.sh
 ./upload_blob.sh
 
+
