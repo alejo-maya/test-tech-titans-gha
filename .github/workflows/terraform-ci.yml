@@ -56,7 +56,7 @@ jobs:
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform fmt in directory: $dir"
-            (cd "$dir" && terraform fmt)
+            (cd "$dir" && terraform fmt --check)
           done
 
       - name: Terraform Validate
