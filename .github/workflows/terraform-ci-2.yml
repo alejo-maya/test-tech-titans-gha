@@ -12,35 +12,33 @@ permissions:
 
 jobs:
 
-  checkout-and-setup:
-    name: Checkout and Setup
-    runs-on: ubuntu-latest
+  # checkout-and-setup:
+  #   name: Checkout and Setup
+  #   runs-on: ubuntu-latest
 
-    steps:
+  #   steps:
 
-      # Display the event that triggered the workflow
-      - run: echo "The job was triggered by a ${{ github.event_name }} event."
+  #     # Display the event that triggered the workflow
+  #     - run: echo "The job was triggered by a ${{ github.event_name }} event."
 
-       # Information about the repository and branch
-      - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+  #      # Information about the repository and branch
+  #     - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
     
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.9.1
+  #     - name: Set up Terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: 1.9.1
 
 
   job-test:
-
     name: test
     runs-on: ubuntu-latst
-    needs: checkout-and-setup
+    # needs: checkout-and-setup
 
     steps:
-
       - run: echo "HOLA"
 
 
