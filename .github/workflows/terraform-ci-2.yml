@@ -40,8 +40,7 @@ jobs:
 
     steps:
 
-      - name: hola
-        run: echo "hola"
+      - run: echo "HOLA"
 
 
   # Save all directories containing terraform files in a variable
