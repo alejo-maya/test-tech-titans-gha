@@ -63,14 +63,23 @@ jobs:
     name: Approve Terraform Apply
     needs: terraform-plan
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'workflow_dispatch'
+
 
     steps:
-      - name: Manual approval required
-        id: approval
-        run: |
-          echo "To proceed with applying Terraform changes, approve this workflow run."
-          echo "Approval can be given by navigating to the Actions tab above."
+     - name: Wait for approval
+       uses: trstringer/manual-approval@v1
+       with:    
+         secret: "yes"
+         approvers: myteam
+         minimum-approvals: 1
+
+          
+      # - name: Manual approval required
+      #   id: approval
+      #   run: |
+      #     echo "To proceed with applying Terraform changes, approve this workflow run."
+      #     echo "Approval can be given by navigating to the Actions tab above."
 
   terraform-apply:
     name: Terraform Apply
