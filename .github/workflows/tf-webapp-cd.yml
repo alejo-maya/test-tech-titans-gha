@@ -77,7 +77,8 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          terraform apply "webapp.tfplan" -auto-approve
+          cd pocs/infrastructure/terraform/webapp
+          terraform apply "webapp.tfplan"
 
     # steps:
     #  - name: Wait for approval
