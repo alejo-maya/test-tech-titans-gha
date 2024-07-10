@@ -33,11 +33,11 @@ variable "service_plan_name" {
 }
 
 variable "ARM_SUBSCRIPTION_ID" {
-  type = string
+  type        = string
   description = "Azure subscription ID where the resources will be deployed."
 }
 
 variable "ARM_TENANT_ID" {
-  type = string
+  type        = string
   description = "Azure Active Directory (Tenant) ID."
 }
