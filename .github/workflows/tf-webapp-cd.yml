@@ -71,7 +71,7 @@ jobs:
        uses: trstringer/manual-approval@v1
        with:    
          secret: "yes"
-         approvers: myteam
+         approvers: alejo-maya
          minimum-approvals: 1
 
           
