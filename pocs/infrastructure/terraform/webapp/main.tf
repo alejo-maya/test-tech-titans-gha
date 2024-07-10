@@ -15,7 +15,7 @@ resource "azurerm_service_plan" "webapp" {
 }
 
 resource "azurerm_linux_web_app" "webapp" {
-  name                = "${lower(var.naming_prefix)}"
+  name                = lower(var.naming_prefix)
   location            = azurerm_resource_group.webapp.location
   resource_group_name = azurerm_resource_group.webapp.name
   service_plan_id     = azurerm_service_plan.webapp.id
