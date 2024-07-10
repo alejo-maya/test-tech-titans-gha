@@ -11,22 +11,23 @@ on:
 
 # Check if the head branch starts with 'feature/'
 jobs:
-  check-branch:
-    name: Check branch name
-    runs-on: ubuntu-latest
+  # check-branch:
+  #   name: Check branch name
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - run: |
-          if [[ ! "${{ github.head_ref }}" =~ ^feature ]]; then
-            echo "This workflow only runs for branches starting with 'feature/'."
-            exit 1
-          fi
+  #   steps:
+  #     - run: |
+  #         if [[ ! "${{ github.head_ref }}" =~ ^feature ]]; then
+  #           echo "This workflow only runs for branches starting with 'feature/'."
+  #           exit 1
+  #         fi
 
 
   terraform-ci:
-    name: Terraform Validate and Format
-    needs: check-branch
+    if: startsWith(github.head_ref, 'feature')
     runs-on: ubuntu-latest
+    name: Terraform Validate and Format
+    # needs: check-branch
 
     steps:
 
