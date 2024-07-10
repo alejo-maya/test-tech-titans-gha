@@ -45,10 +45,11 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
 
-      - run: cd pocs/infrastructure/terraform/webapp && pwd
-
       - name: Terraform Init
         run: |
+          pwd
+          cd pocs/infrastructure/terraform/webapp
+          pwd
           terraform init -backend-config="state.backend.conf" -reconfigure
 
       - name: Terraform Plan
