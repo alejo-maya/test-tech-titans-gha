@@ -22,19 +22,6 @@ jobs:
 
        # Information about the repository and branch
       - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
-      # - name: 'Az CLI login'
-      #   # run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p=${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-      #   uses: azure/login@v1
-      #   with:
-      #     # creds: '${{ secrets.AZURE_CREDENTIALS }}'
-      #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: 'Run Azure CLI commands'
-      #   run: |
-      #       az account show
     
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -64,10 +51,10 @@ jobs:
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             (cd "$dir" &&
-            echo "Renaming the backend configuration file to make it unusable..." &&
-            mv backend.tf backend.tf.example &&
-            echo "Initializing Terraform in directory: $dir" &&
-            terraform init)
+            # echo "Renaming the backend configuration file to make it unusable..." &&
+            # mv backend.tf backend.tf.example &&
+            # echo "Initializing Terraform in directory: $dir" &&
+            terraform init -backend=false)
           done
 
       - name: Terraform Format Check
