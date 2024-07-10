@@ -6,10 +6,6 @@ on:
       - '**'
   workflow_dispatch:
 
-permissions:
-      id-token: write
-      contents: read
-
 jobs:
 
   # checkout-and-setup:
@@ -53,6 +49,7 @@ jobs:
       - id: find_dirs
         run: |
           echo aloja
+          pwd
           tfDIRS=$(find . -name '*.tf' -exec dirname {} \; | sort -u)
           for dir in $tfDIRS; do
             echo "Found Terraform files in directory: $dir"
