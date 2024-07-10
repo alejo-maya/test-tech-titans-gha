@@ -63,16 +63,16 @@ jobs:
     name: Approve Terraform Apply
     needs: terraform-plan
     runs-on: ubuntu-latest
-    # if: github.event_name == 'workflow_dispatch'
+    environment:
+      name: webappInfraTest.prod
 
-
-    steps:
-     - name: Wait for approval
-       uses: trstringer/manual-approval@v1
-       with:    
-         secret: "yes"
-         approvers: alejo-maya
-         minimum-approvals: 1
+    # steps:
+    #  - name: Wait for approval
+    #    uses: trstringer/manual-approval@v1
+    #    with:    
+    #      secret: "yes"
+    #      approvers: alejo-maya
+    #      minimum-approvals: 1
 
           
       # - name: Manual approval required
@@ -84,8 +84,8 @@ jobs:
   terraform-apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
-    if: success() && github.event_name == 'workflow_dispatch'
-    needs: terraform-plan
+    # if: success() && github.event_name == 'workflow_dispatch'
+    needs: approve-apply
 
     steps:
       - name: Checkout repository
