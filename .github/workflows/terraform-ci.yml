@@ -64,11 +64,7 @@ jobs:
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Initializing Terraform in directory: $dir"
-            if [[ "$dir" == *"webapp"* ]]; then
-              (cd "$dir" && mv backend.tf backend.tf.example && terraform init")
-            else
-              (cd "$dir" && mv backend.tf backend.tf.example && terraform init)
-            fi
+            (cd "$dir" && mv backend.tf backend.tf.example && terraform init")
           done
 
       - name: Terraform Format Check
