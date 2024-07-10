@@ -18,13 +18,11 @@ jobs:
     name: Terraform Plan
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: pocs/infrastructure/terraform/webapp
+    # defaults:
+    #   run:
+    #     working-directory: pocs/infrastructure/terraform/webapp
 
     steps:
-
-      - run: pwd
       
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,6 +31,8 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.9.1
+
+      - run: cd pocs/infrastructure/terraform/webapp && pwd
 
       - name: Terraform Init
         run: |
