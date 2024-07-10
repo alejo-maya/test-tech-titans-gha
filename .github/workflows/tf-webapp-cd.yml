@@ -18,7 +18,14 @@ jobs:
     name: Terraform Plan
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./pocs/infrastructure/terraform/webapp
+
     steps:
+
+      - run: pwd
+      
       - name: Checkout repository
         uses: actions/checkout@v2
 
