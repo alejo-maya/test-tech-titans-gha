@@ -14,10 +14,8 @@ jobs:
     if: startsWith(github.head_ref, 'feature')
     runs-on: ubuntu-latest
     name: Terraform Validate and Format
-    # needs: check-branch
 
     steps:
-
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
 
