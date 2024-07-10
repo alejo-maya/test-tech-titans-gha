@@ -37,6 +37,7 @@ jobs:
 
     name: test
     runs-on: ubuntu-latst
+    needs: checkout-and-setup
 
     steps:
 
