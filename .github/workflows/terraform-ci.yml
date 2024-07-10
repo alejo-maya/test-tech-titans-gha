@@ -64,7 +64,7 @@ jobs:
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Initializing Terraform in directory: $dir"
-            (cd "$dir" && mv backend.tf backend.tf.example && terraform init")
+            (cd "$dir" && mv backend.tf backend.tf.example && terraform init)
           done
 
       - name: Terraform Format Check
