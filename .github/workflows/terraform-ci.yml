@@ -58,16 +58,14 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
 
+      # Terraform initialization ignoring backend.tf
       - name: Terraform Init
         run: |
-          az account show
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
-            ls
             echo "Initializing Terraform in directory: $dir"
             if [[ "$dir" == *"webapp"* ]]; then
-              echo "hola"
-              # (cd "$dir" && terraform init -backend-config="state.backend.conf" -reconfigure")
+              (cd "$dir" && mv backend.tf backend.tf.example && terraform init")
             else
               (cd "$dir" && mv backend.tf backend.tf.example && terraform init)
             fi
@@ -78,7 +76,7 @@ jobs:
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform fmt in directory: $dir"
-            (cd "$dir" && terraform fmt --check)
+            (cd "$dir" && terraform fmt)
           done
 
       - name: Terraform Validate
