@@ -1,9 +1,15 @@
 name: Terraform CI
 
 on:
+  push:
+    branches:
+      - 'feature/**'
   pull_request:
+    branches:
+      - main
+      - develop
     paths:
-      - '**/*.tf'
+      - 'pocs/infrastructure/terraform/**'
   workflow_dispatch:
 
 jobs:
