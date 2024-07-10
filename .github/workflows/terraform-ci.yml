@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - run: |
-          if [[ ! "${{ github.head_ref }}" =~ ^feature/ ]]; then
+          if [[ ! "${{ github.head_ref }}" =~ ^feature ]]; then
             echo "This workflow only runs for branches starting with 'feature/'."
             exit 1
           fi
