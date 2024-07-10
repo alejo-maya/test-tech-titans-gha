@@ -40,7 +40,7 @@ jobs:
 
     steps:
 
-      - id: hola
+      - name: hola
         run: echo "hola"
 
 
