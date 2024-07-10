@@ -63,11 +63,11 @@ jobs:
         run: |
           tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
-            cd "$dir"
-            echo "Renaming the backend configuration file to make it unusable..."
-            mv backend.tf backend.tf.example
-            echo "Initializing Terraform in directory: $dir"
-            terraform init
+            (cd "$dir" &&
+            echo "Renaming the backend configuration file to make it unusable..." &&
+            mv backend.tf backend.tf.example &&
+            echo "Initializing Terraform in directory: $dir" &&
+            terraform init)
           done
 
       - name: Terraform Format Check
