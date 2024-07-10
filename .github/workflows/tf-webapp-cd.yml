@@ -1,0 +1,68 @@
+name: Provision Azure Web Server
+
+on:
+#   push:
+#     branches:
+#       - main
+#       - develop
+#     paths:
+#       - 'pocs/infrastructure/terraform/webapp/**'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.1
+
+      - name: Terraform Init
+        run: |
+          terraform init -backend-config="state.backend.conf" -reconfigure
+
+      - name: Terraform Plan
+        run: |
+          terraform plan -var-file="variables.tfvars" -out webapp.tfplan
+
+  approve-apply:
+    name: Approve Terraform Apply
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Manual approval required
+        id: approval
+        run: |
+          echo "To proceed with applying Terraform changes, approve this workflow run."
+          echo "Approval can be given by navigating to the Actions tab above."
+
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    if: success() && github.event_name == 'workflow_dispatch'
+    needs: terraform-plan
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.9.1
+
+      - name: Terraform Apply
+        run: |
+          terraform apply "webapp.tfplan" -auto-approve
