@@ -6,6 +6,7 @@ on:
       working-directory:
         required: false
         type: string
+  workflow_dispatch:
 
 jobs:
   # Save all directories containing terraform files in a variable
