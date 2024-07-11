@@ -38,7 +38,7 @@ jobs:
             echo "tfDIRS="$tfDIRS"" >> "$GITHUB_OUTPUT"
           fi
 
-          if [ "${{ tfDIRS }}" == "" ]; then
+          if [ "$tfDIRS" == "" ]; then
             echo "No Terraform directories found or specified."
             exit 1
           fi
