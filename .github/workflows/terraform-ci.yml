@@ -6,19 +6,16 @@ on:
       working-directory:
         required: false
         type: string
-  workflow_dispatch:
 
 jobs:
-  # Save all directories containing terraform files in a variable only if the working directory is empty
+  # Save all directories containing terraform files in a variable
   set-tf-dirs:
-    # if: ${{ !inputs.working-directory }}
     runs-on: ubuntu-latest
     name: Set Terraform Directories
     outputs:
       tfDIRS: ${{ steps.set_dirs.outputs.tfDIRS }}
       
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v2
     
@@ -52,8 +49,7 @@ jobs:
     env:
       tfDIRS: ${{needs.set-tf-dirs.outputs.tfDIRS}}
 
-    steps:
-    
+    steps:  
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
 
@@ -68,40 +64,10 @@ jobs:
         with:
           terraform_version: 1.9.1
 
-      # - name: Set tfDIRS variable
-      #       # echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> "$GITHUB_ENV"
-      #       # 
-      #   run: |
-      #     if [ "${{ needs.find-tf-dirs.outputs.tfDIRS }}" != "" ]; then
-      #       {
-      #         echo 'tfDIRS<<EOF'
-      #         echo "${{ needs.find-tf-dirs.outputs.tfDIRS }}"
-      #         echo EOF
-      #       } >> "$GITHUB_ENV"
-      #     elif [ "${{ inputs.working-directory }}" != "" ]; then
-      #       echo "hola22"
-      #     else
-      #       echo "No Terraform directories found or specified."
-      #       exit 1
-      #     fi
-
-      # - name: Set tfDIRS variable
-      #   run: |
-      #     echo hola1
-      #     if [ "${{ inputs.working-directory }}" ]; then
-      #       echo hola2
-      #       echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
-      #     else
-      #       echo hola3
-      #       # echo ${{ needs.find-tf-dirs.outputs.tfDIRS }}
-      #       # echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
-      #       # echo $tfDIRS
-      #     fi
-
       # Terraform initialization ignoring backend.tf
       - name: Terraform Init
+          # tfDIRS="${{ env.tfDIRS }}"
         run: |
-          tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             (cd "$dir" &&
             echo "Initializing Terraform in directory: $dir" &&
