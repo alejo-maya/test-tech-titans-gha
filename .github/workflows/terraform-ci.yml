@@ -64,6 +64,7 @@ jobs:
         run: |
           if [ "${{ needs.find-tf-dirs.outputs.tfDIRS }}" != "" ]; then
             echo "hola11"
+            echo "tfDIRS="${{ needs.find-tf-dirs.outputs.tfDIRS }}"" >> "$GITHUB_ENV"
           elif [ "${{ inputs.working-directory }}" != "" ]; then
             echo "hola22"
           else
