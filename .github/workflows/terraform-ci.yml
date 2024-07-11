@@ -34,7 +34,8 @@ jobs:
               echo EOF
             } >> "$GITHUB_OUTPUT"
           else
-            echo "tfDIRS="${{ inputs.working-directory }}"" >> "$GITHUB_OUTPUT"
+            tfDIRS="${{ inputs.working-directory }}"
+            echo "tfDIRS="$tfDIRS"" >> "$GITHUB_OUTPUT"
           fi
 
           if [ "$tfDIRS" == "" ]; then
