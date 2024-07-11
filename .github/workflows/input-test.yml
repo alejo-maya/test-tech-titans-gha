@@ -34,17 +34,17 @@ jobs:
         id: wait-for-input
         with:
           script: |
-            const issue_number = ${{ steps.create-issue.outputs.issue_number }};
+            const issue_number = context.payload.inputs.issue_number;
             const regex = /\/varfile (\S+)/;
             let varFile = '';
-
+            
             while (!varFile) {
               const { data: comments } = await github.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue_number
               });
-
+              
               const userComment = comments.find(comment => regex.test(comment.body));
               if (userComment) {
                 varFile = userComment.body.match(regex)[1];
@@ -59,7 +59,7 @@ jobs:
                 await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute before checking again
               }
             }
-
+            
             return { var_file: varFile };
 
       - name: test echo test
