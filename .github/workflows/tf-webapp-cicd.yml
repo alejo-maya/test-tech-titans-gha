@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  WEBAPP_DIRECTORY: "./pocs/infrastructure/terraform/webapp"
+  WEBAPP_DIRECTORY: ./pocs/infrastructure/terraform/webapp
 
 permissions:
   id-token: write
@@ -23,7 +23,7 @@ jobs:
     name: Terraform CI
     uses: ./.github/workflows/terraform-ci.yml
     with:
-      working-directory: $WEBAPP_DIRECTORY
+      working-directory: ${{ env.WEBAPP_DIRECTORY }}
       
   # terraform-cd:
   #   name: Terraform Provision Azure Web Server
