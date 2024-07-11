@@ -57,7 +57,7 @@ jobs:
   
         - name: Terraform Init
           run: |
-            terraform init
+            terraform init -backend=false
   
         - name: Terraform Plan
           run: |
