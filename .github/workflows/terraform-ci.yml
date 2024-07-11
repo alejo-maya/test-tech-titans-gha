@@ -25,11 +25,12 @@ jobs:
           #   echo "No Terraform directories found or specified."
           #   exit 1
           # fi
+            # echo "tfDIRS="${{ inputs.working-directory }}"" >> "$GITHUB_OUTPUT"
     
       - name: Set Directories
         id: set_dirs
         run: |
-          if [ "${{ inputs.working-directory }}" == "" ]; then
+          if [ "${{ inputs.working-directory }}" != "" ]; then
             tfDIRS=$(find . -name '*.tf' -exec dirname {} \; | sort -u)
             for dir in $tfDIRS; do
               echo "Found Terraform files in directory: $dir"
@@ -39,8 +40,8 @@ jobs:
               echo "$tfDIRS"
               echo EOF
             } >> "$GITHUB_OUTPUT"
-          elif
-            echo "tfDIRS="${{ inputs.working-directory }}"" >> "$GITHUB_OUTPUT"
+          else
+            echo hola
           fi
 
 
