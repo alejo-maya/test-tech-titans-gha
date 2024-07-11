@@ -63,7 +63,7 @@ jobs:
             echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
           else
             echo hola3
-            echo "tfDIRS=${{ needs.find-tf-dirs.find_dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
+            echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
             echo $tfDIRS
           fi
 
