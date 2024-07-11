@@ -1,19 +1,37 @@
 name: Terraform CI
 
 on:
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - '**/*.tf'
+  workflow_call:
+    inputs:
+      working-directory:
+        required: false
+        type: string
   workflow_dispatch:
 
 jobs:
+  # Save all directories containing terraform files in a variable only if the working directory is empty
+  find-tf-dirs:
+    if: ${{ !inputs.working-directory }}
+    runs-on: ubuntu-latest
+    name: Find Terraform Directories
+    steps:
+      - name: Find Directories
+        id: find_dirs
+        run: |
+          tfDIRS=$(find . -name '*.tf' -exec dirname {} \; | sort -u)
+          for dir in $tfDIRS; do
+            echo "Found Terraform files in directory: $dir"
+          done
+          {
+            echo 'tfDIRS<<EOF'
+            echo "$tfDIRS"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
   terraform-ci:
-    if: startsWith(github.head_ref, 'feature')
     runs-on: ubuntu-latest
     name: Terraform Validate and Format
+    needs: find-tf-dirs
 
     steps:
       # Display the event that triggered the workflow
@@ -30,19 +48,13 @@ jobs:
         with:
           terraform_version: 1.9.1
 
-       # Save all directories containing terraform files in a variable
-      - name: Find Directories
-        id: find_dirs
+      - name: Set tfDIRS variable
         run: |
-          tfDIRS=$(find . -name '*.tf' -exec dirname {} \; | sort -u)
-          for dir in $tfDIRS; do
-            echo "Found Terraform files in directory: $dir"
-          done
-          {
-            echo 'tfDIRS<<EOF'
-            echo "$tfDIRS"
-            echo EOF
-          } >> "$GITHUB_ENV"
+          if [ "${{ inputs.working-directory }}" ]; then
+            echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
+          else
+            echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
+          fi
 
       # Terraform initialization ignoring backend.tf
       - name: Terraform Init
