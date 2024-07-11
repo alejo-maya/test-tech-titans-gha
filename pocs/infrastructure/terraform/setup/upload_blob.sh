@@ -44,6 +44,7 @@ terraform {
     key                   = "$BLOB_NAME"
     subscription_id       = "$SUBSCRIPTION_ID"
     tenant_id             = "$TENANT_ID"
+    use_oidc              = true
   }
 }
 EOF
