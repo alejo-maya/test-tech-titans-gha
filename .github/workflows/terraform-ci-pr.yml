@@ -7,6 +7,7 @@ on:
       - develop
     paths:
       - '**/*.tf'
+  workflow_dispatch:
 
 jobs:
   terraform-ci:
