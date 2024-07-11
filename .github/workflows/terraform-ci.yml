@@ -60,9 +60,9 @@ jobs:
 
       - name: Set tfDIRS variable
         run: |
-          if [ -n "${{ needs.find-tf-dirs.outputs.tfDIRS }}" ]; then
+          if [ "${{ needs.find-tf-dirs.outputs.tfDIRS }}" != "" ]; then
             echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
-          elif [ -n "${{ inputs.working-directory }}" ]; then
+          elif [ "${{ inputs.working-directory }}" != "" ]; then
             echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
           else
             echo "No Terraform directories found or specified."
