@@ -24,9 +24,9 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       
-    # defaults:
-    #   run:
-    #     working-directory: pocs/infrastructure/terraform/webapp
+    defaults:
+      run:
+        working-directory: pocs/infrastructure/terraform/webapp
 
     steps:
       
@@ -47,12 +47,12 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd pocs/infrastructure/terraform/webapp
+          # cd pocs/infrastructure/terraform/webapp
           terraform init -backend-config="state.backend.conf" -reconfigure
 
       - name: Terraform Plan
         run: |
-          cd pocs/infrastructure/terraform/webapp
+          # cd pocs/infrastructure/terraform/webapp
           terraform plan -var-file="variables.tfvars" -out webapp.tfplan
 
       - name: Approve Terraform Apply
@@ -69,5 +69,5 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          cd pocs/infrastructure/terraform/webapp
+          # cd pocs/infrastructure/terraform/webapp
           terraform apply "webapp.tfplan"
