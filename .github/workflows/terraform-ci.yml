@@ -67,7 +67,6 @@ jobs:
 
       # Terraform initialization ignoring backend.tf
       - name: Terraform Init
-          # tfDIRS="${{ env.tfDIRS }}"
         run: |
           for dir in $tfDIRS; do
             (cd "$dir" &&
@@ -77,7 +76,6 @@ jobs:
 
       - name: Terraform Format Check
         run: |
-          tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform fmt in directory: $dir"
             (cd "$dir" && terraform fmt --check)
@@ -85,7 +83,6 @@ jobs:
 
       - name: Terraform Validate
         run: |
-          tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             echo "Running terraform validate in directory: $dir"
             (cd "$dir" && terraform validate)
