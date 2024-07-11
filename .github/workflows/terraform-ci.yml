@@ -64,7 +64,7 @@ jobs:
           else
             echo hola3
             echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
-            echo $tfDIRS
+            # echo $tfDIRS
           fi
 
       # Terraform initialization ignoring backend.tf
