@@ -21,11 +21,6 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2
-          # if [ "$tfDIRS" == "" ]; then
-          #   echo "No Terraform directories found or specified."
-          #   exit 1
-          # fi
-            # 
     
       - name: Set Directories
         id: set_dirs
@@ -42,6 +37,11 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           else
             echo "tfDIRS="${{ inputs.working-directory }}"" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ "$tfDIRS" == "" ]; then
+            echo "No Terraform directories found or specified."
+            exit 1
           fi
 
 
