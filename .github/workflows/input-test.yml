@@ -34,7 +34,7 @@ jobs:
         id: wait-for-input
         with:
           script: |
-            const issue_number = context.payload.inputs.issue_number;
+            const issue_number = ${{ steps.create-issue.outputs.issue_number }};
             const regex = /\/varfile (\S+)/;
             let varFile = '';
             
