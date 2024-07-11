@@ -54,9 +54,12 @@ jobs:
 
       - name: Set tfDIRS variable
         run: |
+          echo hola1
           if [ "${{ inputs.working-directory }}" ]; then
+            echo hola2
             echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
           else
+            echo hola3
             echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
           fi
 
