@@ -60,14 +60,8 @@ jobs:
           cd pocs/infrastructure/terraform/webapp
           terraform plan -var-file="variables.tfvars" -out webapp.tfplan
 
-  terraform-apply:
-    name: Approve Terraform Apply
-    needs: terraform-plan
-    runs-on: ubuntu-latest
-    
-    steps:
-    
-      - uses: trstringer/manual-approval@v1
+      - name: Approve Terraform Apply
+        uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
           approvers: alejo-maya
@@ -77,38 +71,8 @@ jobs:
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: 'approve'
           additional-denied-words: 'reject'
-      
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.9.1
 
       - name: Terraform Apply
         run: |
           cd pocs/infrastructure/terraform/webapp
           terraform apply "webapp.tfplan"
-
-    # steps:
-    #  - name: Wait for approval
-    #    uses: trstringer/manual-approval@v1
-    #    with:    
-    #      secret: "yes"
-    #      approvers: alejo-maya
-    #      minimum-approvals: 1
-
-          
-      # - name: Manual approval required
-      #   id: approval
-      #   run: |
-      #     echo "To proceed with applying Terraform changes, approve this workflow run."
-      #     echo "Approval can be given by navigating to the Actions tab above."
-
-  # terraform-apply:
-  #   name: Terraform Apply
-  #   runs-on: ubuntu-latest
-  #   # if: success() && github.event_name == 'workflow_dispatch'
-  #   needs: approve-apply
-
