@@ -41,6 +41,12 @@ jobs:
     needs: find-tf-dirs
 
     steps:
+
+      - env:
+          OUTPUT1: ${{needs.find-tf-dirs.outputs.tfDIRS}}
+
+      - run: echo "$OUTPUT1"
+    
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
 
@@ -63,7 +69,7 @@ jobs:
             echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
           else
             echo hola3
-            echo ${{ needs.find-tf-dirs.outputs.tfDIRS }}
+            # echo ${{ needs.find-tf-dirs.outputs.tfDIRS }}
             # echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
             # echo $tfDIRS
           fi
