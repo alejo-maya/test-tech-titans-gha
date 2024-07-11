@@ -40,7 +40,7 @@ jobs:
     name: Terraform Validate and Format
     needs: find-tf-dirs
     env:
-      OUTPUT1: ${{needs.find-tf-dirs.outputs.tfDIRS}}
+      tfDIRS: ${{needs.find-tf-dirs.outputs.tfDIRS}}
 
     steps:
 
@@ -61,41 +61,41 @@ jobs:
         with:
           terraform_version: 1.9.1
 
-      - name: Set tfDIRS variable
-        run: |
-          echo hola1
-          if [ "${{ inputs.working-directory }}" ]; then
-            echo hola2
-            echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
-          else
-            echo hola3
-            # echo ${{ needs.find-tf-dirs.outputs.tfDIRS }}
-            # echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
-            # echo $tfDIRS
-          fi
+      # - name: Set tfDIRS variable
+      #   run: |
+      #     echo hola1
+      #     if [ "${{ inputs.working-directory }}" ]; then
+      #       echo hola2
+      #       echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
+      #     else
+      #       echo hola3
+      #       # echo ${{ needs.find-tf-dirs.outputs.tfDIRS }}
+      #       # echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
+      #       # echo $tfDIRS
+      #     fi
 
       # Terraform initialization ignoring backend.tf
       - name: Terraform Init
+          # tfDIRS="${{ env.tfDIRS }}"
         run: |
-          tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             (cd "$dir" &&
             echo "Initializing Terraform in directory: $dir" &&
             terraform init -backend=false)
           done
 
-      - name: Terraform Format Check
-        run: |
-          tfDIRS="${{ env.tfDIRS }}"
-          for dir in $tfDIRS; do
-            echo "Running terraform fmt in directory: $dir"
-            (cd "$dir" && terraform fmt --check)
-          done
+      # - name: Terraform Format Check
+      #   run: |
+      #     tfDIRS="${{ env.tfDIRS }}"
+      #     for dir in $tfDIRS; do
+      #       echo "Running terraform fmt in directory: $dir"
+      #       (cd "$dir" && terraform fmt --check)
+      #     done
 
-      - name: Terraform Validate
-        run: |
-          tfDIRS="${{ env.tfDIRS }}"
-          for dir in $tfDIRS; do
-            echo "Running terraform validate in directory: $dir"
-            (cd "$dir" && terraform validate)
-          done
+      # - name: Terraform Validate
+      #   run: |
+      #     tfDIRS="${{ env.tfDIRS }}"
+      #     for dir in $tfDIRS; do
+      #       echo "Running terraform validate in directory: $dir"
+      #       (cd "$dir" && terraform validate)
+      #     done
