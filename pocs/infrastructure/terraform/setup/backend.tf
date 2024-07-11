@@ -1,4 +1,4 @@
-terraform {
+# terraform {
 #   backend "azurerm" {
 #     resource_group_name  = "sw-tech-titans-pocue-1-tfstate-rg001"
 #     storage_account_name = "swttpoc1tfstate001"
