@@ -23,8 +23,8 @@ jobs:
     name: Terraform CI
     uses: ./.github/workflows/terraform-ci.yml
     with:
-      working-directory: ${{ env.WEBAPP_DIRECTORY }}
-
+      working-directory: env.WEBAPP_DIRECTORY
+      
   # terraform-cd:
   #   name: Terraform Provision Azure Web Server
   #   runs-on: ubuntu-latest
