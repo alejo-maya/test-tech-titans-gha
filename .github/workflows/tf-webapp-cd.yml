@@ -15,8 +15,8 @@ permissions:
   issues: write
 
 jobs:
-  terraform-plan:
-    name: Terraform Plan
+  terraform-provider:
+    name: Terraform Provision Azure Web Server
     runs-on: ubuntu-latest
 
     env:
@@ -44,11 +44,6 @@ jobs:
             client-id: ${{ env.ARM_CLIENT_ID }}
             tenant-id: ${{ env.ARM_TENANT_ID }}
             subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
-  
-      # - name: 'Run Azure CLI commands'
-      #   run: |
-      #       az account show
-      #       pwd 
 
       - name: Terraform Init
         run: |
@@ -66,8 +61,8 @@ jobs:
           secret: ${{ github.TOKEN }}
           approvers: alejo-maya
           minimum-approvals: 1
-          issue-title: "Deploying v1.3.5 to prod from staging"
-          issue-body: "Please approve or deny the deployment of version v1.3.5."
+          issue-title: "Deploying infra for the webapp to an azure web server"
+          issue-body: "Please approve or deny the deployment."
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: 'approve'
           additional-denied-words: 'reject'
