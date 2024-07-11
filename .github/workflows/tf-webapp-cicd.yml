@@ -9,13 +9,23 @@ on:
 #       - 'pocs/infrastructure/terraform/webapp/**'
   workflow_dispatch:
 
+env:
+  WEBAPP_DIRECTORY: ./pocs/infrastructure/terraform/webapp
+
 permissions:
   id-token: write
   contents: read
   issues: write
 
 jobs:
-  terraform-provider:
+
+  terraform-ci:
+    name: Terraform CI
+    uses: ./.github/workflows/terraform-ci.yml
+    with:
+      working-directory: ${{ env.WEBAPP_DIRECTORY }}
+
+  terraform-cd:
     name: Terraform Provision Azure Web Server
     runs-on: ubuntu-latest
 
@@ -26,10 +36,9 @@ jobs:
       
     defaults:
       run:
-        working-directory: pocs/infrastructure/terraform/webapp
-
+        working-directory: ${{ env.WEBAPP_DIRECTORY }}
+        
     steps:
-      
       - name: Checkout repository
         uses: actions/checkout@v2
 
