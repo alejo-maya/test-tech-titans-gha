@@ -1,0 +1,75 @@
+name: Test Inputs in RunTime
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pocs/infrastructure/terraform/webapp
+
+    steps:
+
+      - name: Create Issue Requesting Variable File
+        id: create-issue
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { context } = require('@actions/github');
+            const issue = await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Specify Variable File for Terraform Plan',
+              body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
+            });
+            return { issue_number: issue.data.number };
+
+      - name: Wait for User Input
+        uses: actions/github-script@v4
+        id: wait-for-input
+        with:
+          script: |
+            const { context, github } = require('@actions/github');
+            const issue_number = ${{ steps.create-issue.outputs.issue_number }};
+            const regex = /\/varfile (\S+)/;
+            let varFile = '';
+
+            while (!varFile) {
+              const { data: comments } = await github.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number
+              });
+
+              const userComment = comments.find(comment => regex.test(comment.body));
+              if (userComment) {
+                varFile = userComment.body.match(regex)[1];
+                await github.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue_number,
+                  body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
+                });
+              } else {
+                console.log('Waiting for user input...');
+                await new Promise(resolve => setTimeout(resolve, 6000)); // Wait 10 secs before checking again
+              }
+            }
+
+            return { var_file: varFile };
+
+      - name: test echo test
+        run: echo "${{ steps.wait-for-input.outputs.var_file }}"
+
+      - name: test echo test 2
+        run: echo hola hola
