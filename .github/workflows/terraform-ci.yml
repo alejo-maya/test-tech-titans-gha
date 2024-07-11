@@ -38,7 +38,7 @@ jobs:
   terraform-ci:
     runs-on: ubuntu-latest
     name: Terraform Validate and Format
-    # needs: find-tf-dirs
+    needs: find-tf-dirs
     # env:
     #   tfDIRS: ${{needs.find-tf-dirs.outputs.tfDIRS}}
 
