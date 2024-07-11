@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  WEBAPP_DIRECTORY: ./pocs/infrastructure/terraform/webapp
+  WEBAPP_DIRECTORY: "./pocs/infrastructure/terraform/webapp"
 
 permissions:
   id-token: write
