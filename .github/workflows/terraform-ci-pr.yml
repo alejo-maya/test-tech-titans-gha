@@ -1,1 +1,17 @@
+name: Terraform CI for Pull Requests
 
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**/*.tf'
+
+jobs:
+  terraform-ci:
+    name: Terraform Validate and Format for PRs
+    if: startsWith(github.head_ref, 'feature')
+    uses: ./.github/workflows/terraform-ci.yml
+  
+      
