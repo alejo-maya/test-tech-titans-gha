@@ -47,12 +47,10 @@ jobs:
 
       - name: Terraform Init
         run: |
-          # cd pocs/infrastructure/terraform/webapp
           terraform init -backend-config="state.backend.conf" -reconfigure
 
       - name: Terraform Plan
         run: |
-          # cd pocs/infrastructure/terraform/webapp
           terraform plan -var-file="variables.tfvars" -out webapp.tfplan
 
       - name: Approve Terraform Apply
@@ -69,5 +67,4 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          # cd pocs/infrastructure/terraform/webapp
           terraform apply "webapp.tfplan"
