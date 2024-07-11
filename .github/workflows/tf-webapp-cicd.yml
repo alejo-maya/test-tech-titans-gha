@@ -25,7 +25,7 @@ jobs:
     with:
       working-directory: ./pocs/infrastructure/terraform/webapp
       
-  terraform-cd:
+  terraform-webapp-cd:
     needs: terraform-ci
     name: Terraform Provision Azure Web Server
     runs-on: ubuntu-latest
