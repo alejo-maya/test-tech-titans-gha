@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Find Terraform Directories
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+    
       - name: Find Directories
         id: find_dirs
         run: |
