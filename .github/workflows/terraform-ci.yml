@@ -38,14 +38,11 @@ jobs:
   terraform-ci:
     runs-on: ubuntu-latest
     name: Terraform Validate and Format
-    needs: find-tf-dirs
-    env:
-      tfDIRS: ${{needs.find-tf-dirs.outputs.tfDIRS}}
+    # needs: find-tf-dirs
+    # env:
+    #   tfDIRS: ${{needs.find-tf-dirs.outputs.tfDIRS}}
 
     steps:
-
-      - name: "efece"
-        run: echo "$OUTPUT1"
     
       # Display the event that triggered the workflow
       - run: echo "The job was triggered by a ${{ github.event_name }} event."
@@ -60,6 +57,17 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.9.1
+
+      - name: Set tfDIRS variable
+        run: |
+          if [ -n "${{ needs.find-tf-dirs.outputs.tfDIRS }}" ]; then
+            echo "tfDIRS=${{ needs.find-tf-dirs.outputs.tfDIRS }}" >> $GITHUB_ENV
+          elif [ -n "${{ inputs.working-directory }}" ]; then
+            echo "tfDIRS=${{ inputs.working-directory }}" >> $GITHUB_ENV
+          else
+            echo "No Terraform directories found or specified."
+            exit 1
+          fi
 
       # - name: Set tfDIRS variable
       #   run: |
@@ -76,8 +84,8 @@ jobs:
 
       # Terraform initialization ignoring backend.tf
       - name: Terraform Init
-          # tfDIRS="${{ env.tfDIRS }}"
         run: |
+          tfDIRS="${{ env.tfDIRS }}"
           for dir in $tfDIRS; do
             (cd "$dir" &&
             echo "Initializing Terraform in directory: $dir" &&
