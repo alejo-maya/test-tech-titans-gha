@@ -77,7 +77,7 @@ jobs:
         with:
           script: |
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
-            const conclusion = context.payload.workflow_run.conclusion;
+            const conclusion = `${{ job.status }}`
             let commentBody = '';
 
             switch (conclusion) {
