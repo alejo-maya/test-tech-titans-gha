@@ -25,7 +25,7 @@ jobs:
   call-specify-tfvarfile-wf:
     name: Call Specify TF VarFile Workflow
     needs: show-varfile-path
-    uses: ./.github/workflows/runtime-inputs/specify-tfvarfile.yml
+    uses: ./.github/workflows/rti-specify-tfvarfile.yml
     with:
       varfile_path: ${{ inputs.varfile_path }}
 
