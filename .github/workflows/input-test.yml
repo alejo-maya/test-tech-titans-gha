@@ -31,7 +31,7 @@ jobs:
     steps:
 
       - name: Debug Input
-        run: echo ${{ github.event.inputs.varfile_path }}
+        run: echo ${{ inputs.varfile_path }}
 
       - name: Create Issue Requesting Variable File
         id: create-issue
