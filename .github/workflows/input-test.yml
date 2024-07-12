@@ -32,7 +32,7 @@ jobs:
               body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
             });
             core.setOutput("issue_number", issue.number);
-            console.log("F_" + json.stringify(issue))
+            console.log("F_" + JSON.stringify(issue))
 
       - name: Debug Issue Number
         run: echo "${{ steps.create-issue.outputs.issue_number }}"
