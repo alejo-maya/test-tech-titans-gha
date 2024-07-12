@@ -47,7 +47,7 @@ jobs:
             const exists = await github.rest.repos.getContent({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              path: 'pocs/infrastructure/terraform'
+              path: 'pocs/infrastructure/terraform/webapp'
             })
             
             console.log("F__" + JSON.stringify(exists))
