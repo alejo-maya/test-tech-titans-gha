@@ -28,44 +28,43 @@ jobs:
               body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
             });
             core.setOutput("issue_number", issue.data.number);
-            console.log("hola");
 
       - name: Debug Issue Number
         run: echo "Issue number is ${{ steps.create-issue.outputs.issue_number }}"
 
 
-      # - name: Wait for User Input
-      #   uses: actions/github-script@v4
-      #   id: wait-for-input
-      #   with:
-      #     script: |
-      #       const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
-      #       const regex = /\/varfile (\S+)/;
-      #       let varFile = '';
+      - name: Wait for User Input
+        uses: actions/github-script@v4
+        id: wait-for-input
+        with:
+          script: |
+            const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
+            const regex = /\/varfile (\S+)/;
+            let varFile = '';
             
-      #       while (!varFile) {
-      #         const { data: comments } = await github.issues.listComments({
-      #           owner: context.repo.owner,
-      #           repo: context.repo.repo,
-      #           issue_number: issue_number
-      #         });
+            while (!varFile) {
+              const { data: comments } = await github.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number
+              });
               
-      #         const userComment = comments.find(comment => regex.test(comment.body));
-      #         if (userComment) {
-      #           varFile = userComment.body.match(regex)[1];
-      #           await github.issues.createComment({
-      #             owner: context.repo.owner,
-      #             repo: context.repo.repo,
-      #             issue_number: issue_number,
-      #             body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
-      #           });
-      #         } else {
-      #           console.log('Waiting for user input...');
-      #           await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute before checking again
-      #         }
-      #       }
+              const userComment = comments.find(comment => regex.test(comment.body));
+              if (userComment) {
+                varFile = userComment.body.match(regex)[1];
+                await github.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue_number,
+                  body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
+                });
+              } else {
+                console.log('Waiting for user input...');
+                await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute before checking again
+              }
+            }
             
-      #       return { var_file: varFile };
+            return { var_file: varFile };
 
       - name: test echo test
         run: echo "${{ steps.wait-for-input.outputs.var_file }}"
