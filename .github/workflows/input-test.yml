@@ -22,32 +22,9 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'Specify Variable File for Terraform Plan',
-              body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
+              body: 'Please specify the variable file to use for Terraform plan by commenting with `varfile.tfvars`.'
             });
             core.setOutput("issue_number", issue.data.number);
-
-      - name: Debug Issue Number
-        run: echo "${{ steps.create-issue.outputs.issue_number }}"
-
-      # - name: testTEST
-      #   id: wait-for-input
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #       const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
-
-      #       // Check if the file exists in the repository
-      #       const exists = await github.rest.repos.getContent({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         path: 'pocs/infrastructure/terraform/webapp'
-      #       })
-            
-      #       console.log("F__" + JSON.stringify(exists))
-      #       console.log("a la perinola")
-
-            
-      
 
       - name: Wait for User Input and Check Variable File
         id: wait-for-input
