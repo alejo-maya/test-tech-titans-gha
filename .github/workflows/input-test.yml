@@ -17,9 +17,6 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Create Issue Requesting Variable File
         id: create-issue
         uses: actions/github-script@v6
@@ -161,6 +158,3 @@ jobs:
 
       - name: Test Echo
         run: echo "${{ steps.wait-for-input.outputs.var_file }}"
-
-      - name: Test Echo 2
-        run: echo "Hola, hola"
