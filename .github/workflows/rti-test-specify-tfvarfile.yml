@@ -1,4 +1,4 @@
-name: Test for Specify a Terraform Variable File workflow
+name: RTI Test for Specify a Terraform Variable File workflow
 
 on:
   workflow_dispatch:
