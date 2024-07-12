@@ -11,7 +11,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./pocs/infrastructure/terraform/webapp
+
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Create Issue Requesting Variable File
         id: create-issue
@@ -26,10 +33,7 @@ jobs:
             });
             core.setOutput("issue_number", issue.data.number);
 
-      - name: Debug Issue Number
-        run: echo "Issue number is ${{ steps.create-issue.outputs.issue_number }}"
-
-      - name: Wait for User Input
+      - name: Wait for User Input and Check Variable File
         id: wait-for-input
         uses: actions/github-script@v4
         with:
@@ -49,13 +53,34 @@ jobs:
               
               if (lastComment && lastComment.user.login !== 'github-actions[bot]') {
                 if (regex.test(lastComment.body)) {
+                
                   varFile = lastComment.body;
-                  await github.issues.createComment({
+                
+                  // Check if the file exists in the repository
+                  const exists = await github.repos.getContent({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    issue_number: issue_number,
-                    body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
-                  });
+                    path: `./pocs/infrastructure/terraform/webapp/${varFile}`
+                  }).then(() => true).catch(() => false);
+
+                  if (exists) {
+                    await github.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: issue_number,
+                      body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
+                    });
+                    console.log(`Variable file set to ${varFile}. Continuing with the workflow.`);
+                  } else {
+                    await github.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: issue_number,
+                      body: `The file \`${varFile}\` does not exist in the repository. Please specify another variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
+                    });
+                    console.log(`The file ${varFile} does not exist in the repository. Please specify another variable file to use for Terraform plan.`);
+                    varFile = '';
+                  }
                 } else {
                   await github.issues.createComment({
                     owner: context.repo.owner,
@@ -63,6 +88,7 @@ jobs:
                     issue_number: issue_number,
                     body: `The comment \`${lastComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
                   });
+                  console.log( `The comment ${lastComment.body} is not valid. Please specify the variable file to use for Terraform plan.`);
                 }
               }
               console.log('Waiting for user input...');
