@@ -27,10 +27,11 @@ jobs:
               title: 'Specify Variable File for Terraform Plan',
               body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
             });
-            return { issue_number: issue.data.number };
+            core.setOutput("issue_number", issue.data.number);
+            console.log("hola");
 
       - name: Debug Issue Number
-        run: echo "${{ steps.create-issue.outputs.issue_number }}"
+        run: echo "Issue number is ${{ steps.create-issue.outputs.issue_number }}"
 
 
       # - name: Wait for User Input
