@@ -41,19 +41,19 @@ jobs:
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
             const regex = /.*\.tfvars$/;
             let varFile = '';
-            
+
             while (!varFile) {
               const { data: comments } = await github.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue_number
               });
-              
-              const userComment = comments.find(comment => regex.test(comment.body) || comment.body.startsWith('/varfile'));
 
-              if (userComment) {
-                if (regex.test(userComment.body)) {
-                  varFile = userComment.body.match(regex)[1];
+              const lastComment = comments.length > 0 ? comments[comments.length - 1] : null;
+              
+              if (lastComment) {
+                if (regex.test(lastComment.body)) {
+                  varFile = lastComment.body;
                   await github.issues.createComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -65,15 +65,15 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: issue_number,
-                    body: `The comment \`${userComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
+                    body: `The comment \`${lastComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
                   });
                 }
               } else {
                 console.log('Waiting for user input...');
-                await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 5 seconds before checking again
+                await new Promise(resolve => setTimeout(resolve, 8000)); // Wait 8 seconds before checking again
               }
             }
-            
+
             core.setOutput("var_file", varFile);
 
       - name: test echo test
