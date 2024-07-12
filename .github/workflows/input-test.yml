@@ -60,10 +60,8 @@ jobs:
                   const exists = await github.repos.getContent({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    path: `./${varFile}`
+                    path: `./tree/main/pocs/infrastructure/terraform/webapp/${varFile}`
                   }).then(() => true).catch(() => false);
-
-                  console.log("f_" + JSON.stringify(github.repos))
 
                   if (exists) {
                     await github.issues.createComment({
