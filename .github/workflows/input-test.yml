@@ -10,9 +10,6 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./pocs/infrastructure/terraform/webapp
 
     steps:
 
@@ -32,10 +29,9 @@ jobs:
       - name: Debug Issue Number
         run: echo "Issue number is ${{ steps.create-issue.outputs.issue_number }}"
 
-
       - name: Wait for User Input
-        uses: actions/github-script@v4
         id: wait-for-input
+        uses: actions/github-script@v4
         with:
           script: |
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
@@ -75,8 +71,34 @@ jobs:
 
             core.setOutput("var_file", varFile);
 
-      - name: test echo test
+      - name: Close Issue on Success
+        if: success()
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
+            await github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              state: 'closed'
+            });
+
+      - name: Close Issue on Cancel
+        if: cancelled()
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
+            await github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              state: 'closed'
+            });
+
+      - name: Test Echo
         run: echo "${{ steps.wait-for-input.outputs.var_file }}"
 
-      - name: test echo test 2
-        run: echo hola hola
+      - name: Test Echo 2
+        run: echo "Hola, hola"
