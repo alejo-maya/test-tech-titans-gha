@@ -10,9 +10,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./pocs/infrastructure/terraform/webapp
+    # defaults:
+    #   run:
+    #     working-directory: ./pocs/infrastructure/terraform/webapp
 
     steps:
 
