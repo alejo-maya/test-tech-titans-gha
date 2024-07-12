@@ -51,7 +51,7 @@ jobs:
 
               const lastComment = comments.length > 0 ? comments[comments.length - 1] : null;
               
-              if (lastComment && lastComment.user.login !== 'github-actions') {
+              if (lastComment && lastComment.user.login !== 'github-actions[bot]') {
                 if (regex.test(lastComment.body)) {
                   varFile = lastComment.body;
                   await github.issues.createComment({
@@ -70,7 +70,7 @@ jobs:
                 }
               }
               console.log('Waiting for user input...');
-              await new Promise(resolve => setTimeout(resolve, 15000)); // Wait 15 seconds before checking again
+              await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds before checking again
             }
 
             core.setOutput("var_file", varFile);
