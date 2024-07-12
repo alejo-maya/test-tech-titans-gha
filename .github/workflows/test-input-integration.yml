@@ -29,12 +29,4 @@ jobs:
     name: job-test-3
     needs: job-test-2
     steps:
-      # - name: Get Output from User Input Workflow
-      #   id: get-output
-      #   run: |
-      #     echo "Fetching outputs from previous workflow run"
-      #     echo "::set-output name=var_file::$(jq -r '.jobs.test.outputs.var_file' ${{ steps.call-input-workflow.outputs.workflow_outputs }})"
-
-      # - name: Use Var File
-      #   run: echo "${{ steps.get-output.outputs.var_file }}"
       - run: echo ${{ needs.job-test-2.outputs.varfile }}
