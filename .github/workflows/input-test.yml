@@ -17,24 +17,24 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
 
-      - name: Create Issue Requesting Variable File
-        id: create-issue
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const issue = await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'Specify Variable File for Terraform Plan',
-              body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
-            });
-            core.setOutput("issue_number", issue.data.number);
+      # - name: Create Issue Requesting Variable File
+      #   id: create-issue
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const issue = await github.rest.issues.create({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         title: 'Specify Variable File for Terraform Plan',
+      #         body: 'Please specify the variable file to use for Terraform plan by commenting with `/varfile <filename>`.'
+      #       });
+      #       core.setOutput("issue_number", issue.data.number);
 
-      - name: Debug Issue Number
-        run: echo "${{ steps.create-issue.outputs.issue_number }}"
+      # - name: Debug Issue Number
+      #   run: echo "${{ steps.create-issue.outputs.issue_number }}"
 
       - name: testTEST
         id: wait-for-input
