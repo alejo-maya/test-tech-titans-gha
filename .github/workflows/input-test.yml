@@ -33,9 +33,13 @@ jobs:
             });
             core.setOutput("issue_number", issue.number);
 
+      - name: Debug Issue Number
+        run: echo "${{ steps.create-issue.outputs.issue_number }}"
+
+
       - name: Wait for User Input and Check Variable File
         id: wait-for-input
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           script: |
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
