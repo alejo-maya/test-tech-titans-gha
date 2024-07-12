@@ -37,7 +37,7 @@ jobs:
             });
             core.setOutput("issue_number", issue.data.number);
 
-      - name: Wait for User Input and Check Variable File
+      - name: Wait for Input and Check Variable File
         id: wait-for-input
         uses: actions/github-script@v6
         with:
