@@ -7,6 +7,10 @@ on:
         description: 'Path to the directory containing the variable files'
         required: true
         type: string
+    outputs:
+      varfile:
+        description: "The varfile output."
+        value: ${{ jobs.test.outputs.varfile }}
   workflow_dispatch:
     inputs:
       varfile_path:
@@ -21,6 +25,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      varfile: ${{ steps.wait-for-input.outputs.var_file }}
 
     steps:
 
