@@ -11,18 +11,26 @@ jobs:
     steps:
       - run: echo aloja
 
-      - name: Call User Input Workflow
-        id: call-input-workflow
-        uses: ./.github/workflows/input-test.yml
-        with:
-          # token: ${{ secrets.GITHUB_TOKEN }}
-          varfile_path: pocs/infrastructure/terraform/webapp
 
-      - name: Get Output from User Input Workflow
-        id: get-output
-        run: |
-          echo "Fetching outputs from previous workflow run"
-          echo "::set-output name=var_file::$(jq -r '.jobs.test.outputs.var_file' ${{ steps.call-input-workflow.outputs.workflow_outputs }})"
+  job-test-2:
+    name: Call User Input Workflow
+    needs: job-test-1
+    uses: ./.github/workflows/input-test.yml
+    with:
+      # token: ${{ secrets.GITHUB_TOKEN }}
+      varfile_path: pocs/infrastructure/terraform/webapp
 
-      - name: Use Var File
-        run: echo "${{ steps.get-output.outputs.var_file }}"
+  job-test-3:
+    runs-on: ubuntu-latest
+    name: job-test-3
+    needs: job-test-2
+    steps:
+      # - name: Get Output from User Input Workflow
+      #   id: get-output
+      #   run: |
+      #     echo "Fetching outputs from previous workflow run"
+      #     echo "::set-output name=var_file::$(jq -r '.jobs.test.outputs.var_file' ${{ steps.call-input-workflow.outputs.workflow_outputs }})"
+
+      # - name: Use Var File
+      #   run: echo "${{ steps.get-output.outputs.var_file }}"
+      - run: echo ${{ needs.job-test-2.outputs.varfile }}
