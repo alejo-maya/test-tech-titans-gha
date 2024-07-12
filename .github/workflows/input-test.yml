@@ -68,10 +68,9 @@ jobs:
                     body: `The comment \`${lastComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
                   });
                 }
-              } else {
-                console.log('Waiting for user input...');
-                await new Promise(resolve => setTimeout(resolve, 15000)); // Wait 15 seconds before checking again
               }
+              console.log('Waiting for user input...');
+              await new Promise(resolve => setTimeout(resolve, 15000)); // Wait 15 seconds before checking again
             }
 
             core.setOutput("var_file", varFile);
