@@ -39,7 +39,7 @@ jobs:
         with:
           script: |
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
-            const regex = /\/varfile (\S+)/;
+            const regex = /.*\.tfvars$/;
             let varFile = '';
             
             while (!varFile) {
@@ -49,22 +49,32 @@ jobs:
                 issue_number: issue_number
               });
               
-              const userComment = comments.find(comment => regex.test(comment.body));
+              const userComment = comments.find(comment => regex.test(comment.body) || comment.body.startsWith('/varfile'));
+
               if (userComment) {
-                varFile = userComment.body.match(regex)[1];
-                await github.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue_number,
-                  body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
-                });
+                if (regex.test(userComment.body)) {
+                  varFile = userComment.body.match(regex)[1];
+                  await github.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue_number,
+                    body: `Variable file set to \`${varFile}\`. Continuing with the workflow.`
+                  });
+                } else {
+                  await github.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue_number,
+                    body: `The comment \`${userComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
+                  });
+                }
               } else {
                 console.log('Waiting for user input...');
-                await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute before checking again
+                await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 5 seconds before checking again
               }
             }
             
-            return { var_file: varFile };
+            core.setOutput("var_file", varFile);
 
       - name: test echo test
         run: echo "${{ steps.wait-for-input.outputs.var_file }}"
