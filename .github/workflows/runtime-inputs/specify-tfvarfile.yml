@@ -1,4 +1,4 @@
-name: Test Inputs in RunTime
+name: Specify a Terraform Variable File
 
 on:
   workflow_call:
@@ -9,30 +9,21 @@ on:
         type: string
     outputs:
       varfile:
-        description: "The varfile output."
-        value: ${{ jobs.test.outputs.varfile }}
-  workflow_dispatch:
-    inputs:
-      varfile_path:
-        description: 'Path to the directory containing the variable files'
-        required: true
-        type: string
+        description: "The varfile output"
+        value: ${{ jobs.variable-file-request.outputs.varfile }}
 
 permissions:
   contents: write
   issues: write
 
 jobs:
-  test:
+  variable-file-request:
+    name: Variable File Request Workflow
     runs-on: ubuntu-latest
     outputs:
       varfile: ${{ steps.wait-for-input.outputs.var_file }}
 
     steps:
-
-      # - name: Debug Input
-      #   run: echo ${{ inputs.varfile_path }}
-
       - name: Create Issue Requesting Variable File
         id: create-issue
         uses: actions/github-script@v6
@@ -149,6 +140,3 @@ jobs:
               issue_number: issue_number,
               state: 'closed'
             });
-
-      - name: Test Echo
-        run: echo "${{ steps.wait-for-input.outputs.var_file }}"

@@ -1,0 +1,37 @@
+name: Test for Specify a Terraform Variable File workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      varfile_path:
+        description: 'Path to the directory containing the variable files'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+  issues: write
+
+jobs:
+  show-varfile-path:
+    runs-on: ubuntu-latest
+    name: Simple Job to display the input
+
+    steps:
+      - run: echo "The value of the varfile path is > ${{ inputs.varfile_path }} <"
+
+
+  call-specify-tfvarfile-wf:
+    name: Call Specify TF VarFile Workflow
+    needs: show-varfile-path
+    uses: ./.github/workflows/runtime-inputs/specify-tfvarfile.yml
+    with:
+      varfile_path: ${{ inputs.varfile_path }}
+
+  show-obtained-varfile-value:
+    runs-on: ubuntu-latest
+    name: Show the Obtained VarFile Value
+    needs: call-specify-tfvarfile-wf
+    steps:
+      - run: echo "The value of the varfile is > ${{ needs.call-specify-tfvarfile-wf.outputs.varfile }} <"
