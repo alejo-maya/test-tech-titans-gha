@@ -21,8 +21,8 @@ jobs:
     needs: job-test-1
     uses: ./.github/workflows/input-test.yml
     with:
-      # token: ${{ secrets.GITHUB_TOKEN }}
-      varfile_path: "pocs/infrastructure/terraform/webapp"
+      token: ${{ secrets.GITHUB_TOKEN }}
+      varfile_path: pocs/infrastructure/terraform/webapp
 
   job-test-3:
     runs-on: ubuntu-latest
