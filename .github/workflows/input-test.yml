@@ -86,7 +86,7 @@ jobs:
               }
               if (!varFile) {
                 console.log('Waiting for user input...');
-                await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds before checking again
+                await new Promise(resolve => setTimeout(resolve, 15000)); // Wait 15 seconds before checking again
               }
             }
 
