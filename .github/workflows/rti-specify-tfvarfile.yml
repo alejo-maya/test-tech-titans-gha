@@ -1,4 +1,4 @@
-name: Specify a Terraform Variable File
+name: RTI Specify a Terraform Variable File
 
 on:
   workflow_call:
