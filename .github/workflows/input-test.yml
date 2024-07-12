@@ -111,7 +111,7 @@ jobs:
                   console.log( `The comment ${lastComment.body} is not valid. Please specify the variable file to use for Terraform plan.`);
                 }
               }
-              if (varFile === '') {
+              if (!varFile) {
                 console.log('Waiting for user input...');
                 await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds before checking again
               }
