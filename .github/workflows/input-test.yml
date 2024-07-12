@@ -7,10 +7,10 @@ on:
         description: 'Path to the directory containing the variable files'
         required: true
         type: string
-    # outputs:
-    #   varfile:
-    #     description: "The varfile output."
-    #     value: ${{ jobs.test.outputs.varfile }}
+    outputs:
+      varfile:
+        description: "The varfile output."
+        value: ${{ jobs.test.outputs.varfile }}
   workflow_dispatch:
     inputs:
       varfile_path:
@@ -30,8 +30,8 @@ jobs:
 
     steps:
 
-      - name: Debug Input
-        run: echo ${{ inputs.varfile_path }}
+      # - name: Debug Input
+      #   run: echo ${{ inputs.varfile_path }}
 
       - name: Create Issue Requesting Variable File
         id: create-issue
@@ -54,7 +54,7 @@ jobs:
             const issue_number = `${{ steps.create-issue.outputs.issue_number }}`;
             const regex = /.*\.tfvars$/;
             let varFile = '';
-            const varfilePath = `${{ github.event.inputs.varfile_path }}`;
+            const varfilePath = `${{ inputs.varfile_path }}`;
 
             while (!varFile) {
               const { data: comments } = await github.rest.issues.listComments({
