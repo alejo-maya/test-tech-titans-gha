@@ -69,7 +69,7 @@ jobs:
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       issue_number: issue_number,
-                      body: `The file \`${varFile}\` does not exist in the repository. Please specify another variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
+                      body: `The file \`${varFile}\` does not exist in the repository. Please specify another variable file to use for Terraform plan by commenting with \`varfile.tfvars\`.`
                     });
                     console.log(`The file ${varFile} does not exist in the repository. Please specify another variable file to use for Terraform plan.`);
                     varFile = '';
@@ -79,7 +79,7 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: issue_number,
-                    body: `The comment \`${lastComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`/varfile <filename.tfvars>\`.`
+                    body: `The comment \`${lastComment.body}\` is not valid. Please specify the variable file to use for Terraform plan by commenting with \`varfile.tfvars\`.`
                   });
                   console.log( `The comment ${lastComment.body} is not valid. Please specify the variable file to use for Terraform plan.`);
                 }
