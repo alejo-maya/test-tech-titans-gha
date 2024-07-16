@@ -34,13 +34,14 @@ jobs:
             tenant-id: ${{ env.ARM_TENANT_ID }}
             subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - uses: azure/docker-login@v1
-        with:
-          login-server: contoso.azurecr.io
-          username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
+      # - uses: azure/docker-login@v1
+      #   with:
+      #     login-server: contoso.azurecr.io
+      #     username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
+      #     password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
 
       - run: |
+          az acr login --name swttpoc1acr001
           docker build -t tt-react-app .
           docker tag tt-react-app swttpoc1acr001.azurecr.io/tt-react-app:0.0.1
           docker push swttpoc1acr001.azurecr.io/tt-react-app:0.0.1
