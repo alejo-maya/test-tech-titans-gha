@@ -2,6 +2,14 @@ name: Provision Azure Storage Account
 
 on:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      ARM_CLIENT_ID:
+        required: true
+      ARM_TENANT_ID:
+        required: true
+      ARM_SUBSCRIPTION_ID:
+        required: true
 
 permissions:
   id-token: write
