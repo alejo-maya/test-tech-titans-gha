@@ -29,6 +29,9 @@ jobs:
     needs: terraform-ci
     name: Terraform Provision Azure Container Registry
     runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       
     defaults:
       run:
