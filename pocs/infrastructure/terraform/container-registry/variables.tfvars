@@ -1,5 +1,5 @@
 location            = "eastus"
-resource_group_name = "sw-tech-titans-pocue-1-rg001"
-acr_name            = "swttpoc1acr001"
+resource_group_name = "sw-tech-titans-pocue-rhr-rg001"
+acr_name            = "swttpocrhracr001"
 ARM_SUBSCRIPTION_ID = "a5a86e7a-a5a4-4a0f-98b6-605001cf22b2"
 ARM_TENANT_ID       = "b25036e3-de39-4fec-a4aa-bda41b870d38"

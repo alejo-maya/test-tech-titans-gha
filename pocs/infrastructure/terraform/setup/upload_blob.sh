@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Variables
-STORAGE_ACCOUNT_NAME="swttpoc1tfstate001"
+STORAGE_ACCOUNT_NAME="swttpocrhrtfstate001"
 CONTAINER_NAME="terraform-state"
 FILE_PATH="./terraform.tfstate"
-BLOB_NAME="sw-tt-pocue-1-setup.tfstate"
-RESOURCE_GROUP="sw-tech-titans-pocue-1-rg001"
+BLOB_NAME="sw-tt-pocue-rhr-setup.tfstate"
+RESOURCE_GROUP="sw-tech-titans-pocue-rhr-rg001"
 KEY="terraform.tfstate"
 SUBSCRIPTION_ID="a5a86e7a-a5a4-4a0f-98b6-605001cf22b2"
 TENANT_ID="b25036e3-de39-4fec-a4aa-bda41b870d38"
