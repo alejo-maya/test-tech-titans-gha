@@ -27,23 +27,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-  check-docker-credentials:
-    name: Ensure Correct Credentiales
-    needs:   setup-azure-container-registry
-    runs-on: ubuntu-latest
-    steps:
-      - name: Ensure that you have the correct ACR credentials 
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: alejo-maya
-          minimum-approvals: 1
-          issue-title: "Ensure that you have the correct ACR credentials "
-          issue-body: "Please check the environment variables linked to the Azure Container Registry (docker_registry_username and docker_registry_password) since mainly the second one is usually updated."
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: 'ok'
-          additional-denied-words: 'reject'
-
   setup-webapp:
     name: Setup Web App Service
     needs: check-docker-credentials
