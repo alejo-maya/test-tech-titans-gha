@@ -1,7 +1,8 @@
-name: Build and Push
+name: Build and Push React App Image
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   id-token: write
@@ -48,9 +49,3 @@ jobs:
 
       - name: Push Docker Image
         run: docker push ${{ env.ACR_IMAGE_URL }}
-
-      # - run: |
-      #     az acr login --name ${{ env.ACR_NAME }}
-      #     docker build -t tt-react-app .
-      #     docker tag tt-react-app swttpoc1acr001.azurecr.io/tt-react-app:0.0.1
-      #     docker push swttpoc1acr001.azurecr.io/tt-react-app:0.0.1
