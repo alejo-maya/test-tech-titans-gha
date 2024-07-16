@@ -1,0 +1,66 @@
+name: RHR Build and Deploy Front End 
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+
+  react-build:
+    name: React Vite Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./pocs/application/tt-simple-reactapp
+  
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4.0.3
+      with:
+        node-version: '20.15.1'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the app
+      run: npm run build
+
+
+  build-push-react-image:
+      name: Build and Push React App Image Step
+      needs: react-build
+      uses: ./.github/workflows/docker-buildpush.yml
+      secrets:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }} 
+
+
+  deploy-webapp:
+    name: Deploy Web App
+    needs: build-push-react-image
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Log in with Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: WebApp deploy
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'swttpoc1webappam'
+        images: 'swttpoc1acr001.azurecr.io/tt-react-app:0.0.1'
