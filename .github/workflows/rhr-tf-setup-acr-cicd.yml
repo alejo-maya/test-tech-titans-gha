@@ -1,4 +1,4 @@
-name: Provision Azure Container Registry
+name: RHR Provision Azure Container Registry
 
 on:
   workflow_dispatch:
