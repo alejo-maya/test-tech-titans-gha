@@ -23,6 +23,7 @@ jobs:
             tenant-id: ${{ secrets.ARM_TENANT_ID }}
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+          # echo "::add-mask::$ACR_PASSWORD"
       - name: Azure Container Registry Login
         id: asd
         run: | 
@@ -32,7 +33,6 @@ jobs:
           az acr credential show --name swttpocrhracr001 --query "passwords[0].value"
           echo hola3
           ACR_PASSWORD=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
-          echo "::add-mask::$ACR_PASSWORD"
           echo "ACR_PASSWORD=$ACR_PASSWORD" >> "$GITHUB_OUTPUT"
           echo "hola=hola" >> "$GITHUB_OUTPUT"
 
