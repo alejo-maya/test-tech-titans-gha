@@ -36,5 +36,5 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
-      TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }
+      TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
       
