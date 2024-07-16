@@ -37,6 +37,7 @@ jobs:
     - name: Install dependencies and Build App
       run: |
         npm install
+        npm ci
         npm run build
 
     # - name: Build the app
