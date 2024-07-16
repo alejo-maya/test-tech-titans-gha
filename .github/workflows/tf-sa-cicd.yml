@@ -1,16 +1,7 @@
 name: Provision Azure Storage Account
 
 on:
-#   push:
-#     branches:
-#       - main
-#       - develop
-#     paths:
-#       - 'pocs/infrastructure/terraform/webapp/**'
   workflow_dispatch:
-
-# env:
-#   WEBAPP_DIRECTORY: ./pocs/infrastructure/terraform/setup
 
 permissions:
   id-token: write
