@@ -1,4 +1,4 @@
-name: Provision Azure Container Registry
+name: Build and Push
 
 on:
   workflow_dispatch:
