@@ -1,4 +1,4 @@
-name: Build and Push React App Image
+name: RHR Build and Push React App Image
 
 on:
   workflow_dispatch:
