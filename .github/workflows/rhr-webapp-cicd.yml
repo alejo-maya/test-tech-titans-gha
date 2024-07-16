@@ -2,6 +2,12 @@ name: RHR Build and Deploy Front End
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**/tt-simple-reactapp/**'
 
 permissions:
   id-token: write
