@@ -39,10 +39,7 @@ jobs:
         npm install
         npm i rollup@4.18.0 -D -E
         npm run build
-
-    # - name: Build the app
-    #   run: npm run build
-
+        
 
   build-push-react-image:
       name: Build and Push React App Image Step
