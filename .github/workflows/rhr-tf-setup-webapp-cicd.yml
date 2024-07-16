@@ -36,6 +36,7 @@ jobs:
     env:
       TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
       TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       
     defaults:
       run:
