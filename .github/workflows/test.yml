@@ -24,6 +24,7 @@ jobs:
           ACR_PASSWORD=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
           echo "::add-mask::$ACR_PASSWORD"
           echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_OUTPUT
+          echo "hola=hola" >> $GITHUB_OUTPUT
 
   ff:
     name: ff
@@ -34,5 +35,7 @@ jobs:
       - name: use secret
         run: |
           SECRET_HANDLE="${{ needs.f.outputs.ACR_PASSWORD }}"
+          hola="${{ needs.f.outputs.hola }}"
           echo "We retrieved our masked secret: $SECRET_HANDLE"
+          echo "hey $hola"
         
