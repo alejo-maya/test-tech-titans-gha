@@ -25,9 +25,9 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ACR_USERNAME: swttpoc1acr001
+      ACR_USERNAME: swttpocrhracr001
       DOCKER_IMAGE_NAME: tt-react-app
-      ACR_IMAGE_URL: swttpoc1acr001.azurecr.io/tt-react-app:0.0.1
+      ACR_IMAGE_URL: swttpocrhracr001.azurecr.io/tt-react-app:0.0.1
     
     defaults:
       run:
