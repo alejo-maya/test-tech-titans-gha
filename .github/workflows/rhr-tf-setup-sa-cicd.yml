@@ -1,4 +1,4 @@
-name: Provision Azure Storage Account
+name: RHR Provision Azure Storage Account
 
 on:
   workflow_dispatch:
