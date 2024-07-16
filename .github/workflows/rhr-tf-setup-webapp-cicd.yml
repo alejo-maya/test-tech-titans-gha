@@ -10,6 +10,10 @@ on:
         required: true
       ARM_SUBSCRIPTION_ID:
         required: true
+      TF_VAR_docker_registry_username:
+        required: true
+      TF_VAR_docker_registry_password:
+        required: true
 
 permissions:
   id-token: write
@@ -30,9 +34,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
       TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
       
@@ -52,9 +53,9 @@ jobs:
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
-            client-id: ${{ env.ARM_CLIENT_ID }}
-            tenant-id: ${{ env.ARM_TENANT_ID }}
-            subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+            client-id: ${{ secrets.ARM_CLIENT_ID }}
+            tenant-id: ${{ secrets.ARM_TENANT_ID }}
+            subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Terraform Init
         run: |
