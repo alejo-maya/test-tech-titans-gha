@@ -27,28 +27,10 @@ jobs:
     uses: ./.github/workflows/terraform-ci.yml
     with:
       working-directory: ./pocs/infrastructure/terraform/webapp
-
-  check-docker-credentials:
-    name: Ensure Correct Credentiales
-    needs: terraform-ci
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Ensure that you have the correct ACR credentials 
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: alejo-maya
-          minimum-approvals: 1
-          issue-title: "Ensure that you have the correct ACR credentials "
-          issue-body: "Please check the environment variables linked to the Azure Container Registry (docker_registry_username and docker_registry_password) since mainly the second one is usually updated."
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: 'ok'
-          additional-denied-words: 'reject'
+  
       
   terraform-webapp-cd:
-    needs: check-docker-credentials
+    needs: terraform-ci
     name: Terraform Provision Azure Web Server
     runs-on: ubuntu-latest
 
