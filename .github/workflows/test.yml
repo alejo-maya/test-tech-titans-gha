@@ -10,6 +10,10 @@ jobs:
     name: f
     runs-on: ubuntu-latest
 
+    outputs:
+      ACR_PASSWORD: ${{ steps.asd.outputs.ACR_PASSWORD }}
+      hola: ${{ steps.asd.outputs.hola }}
+
     steps:
 
       - name: 'Az CLI login'
@@ -20,6 +24,7 @@ jobs:
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Azure Container Registry Login
+        id: asd
         run: | 
           ACR_PASSWORD=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
           echo "::add-mask::$ACR_PASSWORD"
