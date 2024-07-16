@@ -20,4 +20,19 @@ jobs:
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Azure Container Registry Login
-        run: az acr credential show --name swttpocrhracr001 --query passwords[0].value
+        run: | 
+          ACR_PASSWORD=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
+          echo "::add-mask::$ACR_PASSWORD"
+          echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_OUTPUT
+
+  ff:
+    name: ff
+    needs: f
+    runs-on: ubuntu-latest
+    steps:
+          # echo "::add-mask::$RETRIEVED_SECRET"
+      - name: use secret
+        run: |
+          SECRET_HANDLE="${{ needs.f.outputs.ACR_PASSWORD }}"
+          echo "We retrieved our masked secret: $SECRET_HANDLE"
+        
