@@ -1,4 +1,4 @@
-name: Provision Azure Web Server
+name: RHR Provision Azure Web Server
 
 on:
   workflow_dispatch:
