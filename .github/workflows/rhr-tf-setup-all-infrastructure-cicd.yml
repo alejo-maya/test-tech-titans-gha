@@ -1,0 +1,40 @@
+name: RHR Provision of All Infrastructure
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+
+  setup-storage-account:
+    name: Setup Azure Storage Account
+    uses: ./.github/workflows/rhr-tf-setup-sa-cicd.yml
+    secrets:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+  setup-azure-container-registry:
+    name: Setup Azure Container Registry
+    needs: setup-storage-account
+    uses: ./.github/workflows/rhr-tf-setup-acr-cicd.yml
+    secrets:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+  setup-webapp:
+    name: Setup Web App Service
+    needs: setup-storage-account
+    uses: ./.github/workflows/rhr-tf-setup-webapp-cicd.yml
+    secrets:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
+      TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }
+      
