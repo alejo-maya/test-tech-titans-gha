@@ -41,3 +41,23 @@ variable "ARM_TENANT_ID" {
   type        = string
   description = "Azure Active Directory (Tenant) ID."
 }
+
+variable "docker_registry_url" {
+  type        = string
+  description = "Docker Azure Container Registry URL."
+}
+
+variable "docker_image_name" {
+  type        = string
+  description = "Docker Image in ACR."
+}
+
+variable "docker_registry_username" {
+  type        = string
+  description = "Azure Container Registry Username."
+}
+
+variable "docker_registry_password" {
+  type        = string
+  description = "Azure Container Registry Password."
+}

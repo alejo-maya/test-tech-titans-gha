@@ -1,3 +1,8 @@
+export TF_VAR_docker_registry_username=<your_username>
+export TF_VAR_docker_registry_password=<your_password>
+
+-------------- init
+
 terraform init -backend-config="state.backend.conf" -reconfigure
 
 terraform plan -var-file="variables.tfvars" -out webapp.tfplan

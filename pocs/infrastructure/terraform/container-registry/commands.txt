@@ -1,0 +1,27 @@
+terraform init -backend-config="state.backend.conf" -reconfigure
+
+terraform plan -var-file="variables.tfvars" -out container-registry.tfplan
+
+terraform apply "container-registry.tfplan"
+
+
+
+--------------- destroy
+
+terraform plan -destroy -var-file="variables.tfvars" -out destroy.tfplan
+
+terraform apply "destroy.tfplan"
+
+
+
+--------------
+
+from react app directory
+
+az acr login --name swttpoc1acr001
+
+docker build -t tt-react-app .
+docker tag tt-poc-react swttpoc1acr001.azurecr.io/tt-poc-react:0.0.1
+docker push swttpoc1acr001.azurecr.io/tt-poc-react:0.0.1
+
+## az acr build --registry swttpoc1acr001 --image test-tt-reactapp-image:0.0.1 .
