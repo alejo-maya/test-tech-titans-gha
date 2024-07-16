@@ -34,11 +34,12 @@ jobs:
       with:
         node-version: '20.15.1'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install dependencies and Build App
+      run: npm install |
+          npm run build
 
-    - name: Build the app
-      run: npm run build
+    # - name: Build the app
+    #   run: npm run build
 
 
   build-push-react-image:
