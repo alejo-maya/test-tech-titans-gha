@@ -23,8 +23,8 @@ jobs:
         run: | 
           ACR_PASSWORD=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
           echo "::add-mask::$ACR_PASSWORD"
-          echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_OUTPUT
-          echo "hola=hola" >> $GITHUB_OUTPUT
+          echo "ACR_PASSWORD=$ACR_PASSWORD" >> "$GITHUB_OUTPUT"
+          echo "hola=hola" >> "$GITHUB_OUTPUT"
 
   ff:
     name: ff
