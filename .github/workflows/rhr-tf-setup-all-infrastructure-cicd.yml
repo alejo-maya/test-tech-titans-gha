@@ -29,7 +29,7 @@ jobs:
 
   setup-webapp:
     name: Setup Web App Service
-    needs: setup-storage-account
+    needs: setup-azure-container-registry
     uses: ./.github/workflows/rhr-tf-setup-webapp-cicd.yml
     secrets:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
