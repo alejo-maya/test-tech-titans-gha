@@ -17,7 +17,9 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ACR_NAME: swttpoc1acr001
+      ACR_USERNAME: swttpoc1acr001
+      DOCKER_IMAGE_NAME: tt-react-app
+      ACR_IMAGE_URL: ${{ env.ACR_USERNAME }}.azurecr.io/${{ env.DOCKER_IMAGE_NAME }}:0.0.1
     
     defaults:
       run:
@@ -35,7 +37,17 @@ jobs:
             tenant-id: ${{ env.ARM_TENANT_ID }}
             subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - run: az acr login --name ${{ env.ACR_NAME }}
+      - name: Azure Container Registry Login
+        run: az acr login --name ${{ env.ACR_USERNAME }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+
+      - name: Tag Docker Image
+        run: docker tag ${{ env.DOCKER_IMAGE_NAME }} ${{ env.ACR_IMAGE_URL }} 
+
+      - name: Push Docker Image
+        run: docker push ${{ env.ACR_IMAGE_URL }}
 
       # - run: |
       #     az acr login --name ${{ env.ACR_NAME }}
