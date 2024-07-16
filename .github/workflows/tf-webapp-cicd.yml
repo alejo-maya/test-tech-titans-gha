@@ -1,16 +1,7 @@
 name: Provision Azure Web Server
 
 on:
-#   push:
-#     branches:
-#       - main
-#       - develop
-#     paths:
-#       - 'pocs/infrastructure/terraform/webapp/**'
   workflow_dispatch:
-
-# env:
-#   WEBAPP_DIRECTORY: ./pocs/infrastructure/terraform/webapp
 
 permissions:
   id-token: write
