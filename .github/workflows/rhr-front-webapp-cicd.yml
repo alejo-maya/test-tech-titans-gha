@@ -68,5 +68,5 @@ jobs:
     - name: WebApp deploy
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'swttpoc1webappam'
-        images: 'swttpoc1acr001.azurecr.io/tt-react-app:0.0.1'
+        app-name: 'swttpocrhrwebapp'
+        images: 'swttpocrhracr001.azurecr.io/tt-react-app:0.0.1'
