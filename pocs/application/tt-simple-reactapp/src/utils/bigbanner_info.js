@@ -2,7 +2,7 @@ export const bigbanner_info = {
   home: {
     title: "Welcome to",
     description: "Rescued",
-    highlighted_description: "Hearts!",
+    highlighted_description: "Hearts!!!",
     image_path_1: "/pets_img/cow2.jpg",
     image_path_2: "/pets_img/blacky2.jpg",
     image_path_3: "/pets_img/boxer.jpg",
