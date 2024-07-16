@@ -44,7 +44,7 @@ jobs:
   build-push-react-image:
       name: Build and Push React App Image Step
       needs: react-build
-      uses: ./.github/workflows/docker-buildpush.yml
+      uses: ./.github/workflows/rhr-docker-buildpush.yml
       secrets:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
