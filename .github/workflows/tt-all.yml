@@ -1,0 +1,59 @@
+name: RHR Provision of All Infrastructure
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+
+  setup-storage-account:
+    name: Setup Azure Storage Account
+    uses: ./.github/workflows/rhr-tf-setup-sa-cicd.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  setup-azure-container-registry:
+    name: Setup Azure Container Registry
+    needs: setup-storage-account
+    uses: ./.github/workflows/rhr-tf-setup-acr-cicd.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  get-acr-pass:
+    name: Get Azure Container Registry Pass
+    needs: setup-azure-container-registry
+    runs-on: ubuntu-latest
+    outputs:
+      ACR_PASS: ${{ steps.getpass.outputs.ACR_PASS }}
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: ACR Get Pass
+        id: getpass
+        run: |
+          ACR_PASS=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
+          echo "::add-mask::$ACR_PASS"
+          echo "ACR_PASS=$ACR_PASS" >> "$GITHUB_OUTPUT"      
+
+  setup-webapp:
+    name: Setup Web App Service
+    needs: get-acr-pass
+    uses: ./.github/workflows/rhr-tf-setup-webapp-cicd.yml
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
+      TF_VAR_docker_registry_password: ${{ needs.get-acr-pass.outputs.ACR_PASS }}
