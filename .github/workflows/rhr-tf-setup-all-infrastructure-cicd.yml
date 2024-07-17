@@ -27,14 +27,34 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+  get-acr-pass:
+    name: Get Azure Container Registry Pass
+    needs: setup-azure-container-registry
+    runs-on: ubuntu-latest
+    outputs:
+      ACR_PASS: ${{ steps.getpass.outputs.ACR_PASS }}
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+            client-id: ${{ secrets.ARM_CLIENT_ID }}
+            tenant-id: ${{ secrets.ARM_TENANT_ID }}
+            subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      - name: ACR Get Pass
+        id: getpass
+        run: |
+          ACR_PASS=$(az acr credential show --name ${{ secrets.TF_VAR_docker_registry_username }} --query "passwords[0].value" --output tsv)
+          echo "::add-mask::$ACR_PASS"
+          echo "ACR_PASS=$ACR_PASS" >> "$GITHUB_OUTPUT"      
+
   setup-webapp:
     name: Setup Web App Service
-    needs: check-docker-credentials
+    needs: get-acr-pass
     uses: ./.github/workflows/rhr-tf-setup-webapp-cicd.yml
     secrets:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TF_VAR_docker_registry_username: ${{ secrets.TF_VAR_DOCKER_REGISTRY_USERNAME }}
-      TF_VAR_docker_registry_password: ${{ secrets.TF_VAR_DOCKER_REGISTRY_PASSWORD }}
+      TF_VAR_docker_registry_password: ${{ needs.get-acr-pass.outputs.ACR_PASS }}
       
